@@ -9,23 +9,20 @@ int main()
     double t_sim = 10000; // s
     double dt = 0.01; // s
     int N_PLANETS = 2;
-    double SUN_RADIUS = 696342000; // m
-    double EARTH_RADIUS = 6378137; // m
-    double EARTH_ORBIT_DIST = 149600000000; // m
-    double EARTH_ORBIT_VEL = 29782.7; // m/s
-    double EARTH_MASS = 5.972168 * pow(10, 24); // kg
-    double SUN_MASS = 1.9885 * pow(10, 30); // kg
+    double EARTH_MASS = 5.972167056523e+24; // kg
+    double SUN_MASS = 1.988409424446e+30; // kg
 
     printf("Total simulation time: %0.2lf seconds, time step: %0.2lf\n", t_sim, dt);
 
     // Initial position, velocities, accelerations
-    struct Vector3D zeroVec3D = {0,0,0};
-    struct Vector3D sunPos = {0,0,0};
-    struct Vector3D earthPos = {EARTH_ORBIT_DIST,0,0};
-    struct Vector3D earthVel = {0,EARTH_ORBIT_VEL,0};
+    struct Vector3D zeroVec3D = {0,0,0};    
+    struct Vector3D sunPos = {-1.217525443129e+09, 6.360859780373e+08, 2.326123714856e+07};    
+    struct Vector3D sunVel = {-8.131393439799e+00, -1.368140599051e+01, 3.036350369886e-01};
+    struct Vector3D earthPos = {1.470923786540e+11, -2.514499523307e+10, 2.397560708843e+07};
+    struct Vector3D earthVel = {4.598408326484e+03, 2.922795395177e+04, 1.649928350211e-02};
 
     // Declare and initialize planets and open log files for each planet
-    struct Planet3D sun = {sunPos, zeroVec3D, zeroVec3D, SUN_MASS, "sun"};
+    struct Planet3D sun = {sunPos, sunVel, zeroVec3D, SUN_MASS, "sun"};
     void * fptr_sun = fopen("sun.txt", "w");
     struct Planet3D earth = {earthPos, earthVel, zeroVec3D, EARTH_MASS, "earth"};
     void * fptr_earth = fopen("earth.txt", "w");    
@@ -68,6 +65,7 @@ int main()
     {
         fclose(filePointers[i]);
     }
+    printf("all files closed");
     
     printf("Simulation finished!\n");
 
