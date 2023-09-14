@@ -10,7 +10,7 @@ struct Planet2D
     struct Vector2D vel2D;
     struct Vector2D acc2D;
     double mass;
-    char name[10];    
+    char name[32];    
 };
 
 struct Planet3D
@@ -19,8 +19,29 @@ struct Planet3D
     struct Vector3D vel3D;
     struct Vector3D acc3D;
     double mass;
-    char name[10];
+    char *name;
 };
+
+struct Planet 
+        {
+            int id;
+            char strName[32];
+            double mass;
+            double xpos;
+            double ypos;
+            double zpos;
+            double xvel;
+            double yvel;
+            double zvel;
+        };
+    struct Planets
+        {
+            struct  Planet *body;
+        };
+    struct Planets3D
+        {
+            struct  Planet3D *body;
+        };
 
 struct Vector2D CalcGravityForce2D(struct Planet2D * part1, struct Planet2D * part2)
 {   

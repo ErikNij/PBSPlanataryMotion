@@ -1,30 +1,36 @@
 #include <stdio.h>          /* standard c input/output library */
 #include <stdlib.h>         /* standard c library */
-#define dimentions
+#include "Vectors.h"
+#include "Planet.h"
+#define dimentions 3
 
+struct Planet 
+    {
+        int id;
+        char strName[32];
+        double mass;
+        double xpos;
+        double ypos;
+        double zpos;
+        double xvel;
+        double yvel;
+        double zvel;
+    };
+struct Planets
+    {
+        struct  Planet *body;
+    };
+struct Planets3D
+    {
+        struct  Planet3D *body;
+    };
 
-int main(void)
+struct Planet3D **getData(int numbPlanets)
 {
-    struct Planet 
-        {
-            int id;
-            char strName[32];
-            double mass;
-            double xpos;
-            double ypos;
-            double zpos;
-            double xvel;
-            double yvel;
-            double zvel;
-        };
-    struct Planets
-        {
-            struct  Planet *body;
-        };
     struct Planets SimPlanets;
+    struct Planets3D NewSimPlanets;
 
-
-    int numbPlanets = 100;
+    //int numbPlanets = 100;
 
     double momentum[dimentions] = {0,0,0};
     double deltaV[dimentions] = {0,0,0};
@@ -40,6 +46,7 @@ int main(void)
     };
     //Allocating memory for the planet array
     SimPlanets.body = (struct Planet *) malloc((numbPlanets-1)*sizeof(struct Planet));
+    NewSimPlanets.body = (struct Planet3D *) malloc((numbPlanets-1)*sizeof(struct Planet3D));
     //Reading the  file
     const int nMax = 1024;
     char line[nMax];
@@ -123,13 +130,54 @@ int main(void)
         }
     }
     printf("The new momentum in the x,y, and z direction is %lf , %lf , and, %lf kg * m/s. \n", NewMomentum[0], NewMomentum[1],NewMomentum[2]);
-    for (int i = 0; i<3; i++)
+    for (int i = 0; i<dimentions; i++)
     {
         ImprovementPercentage[i] = (momentum[i]-NewMomentum[i])/momentum[i]*100;
         deltaV[i] = NewMomentum[i]/totalMass;
     }
     printf("That is an improvement of %lf, %lf, and %lf for each direction. \n" , ImprovementPercentage[0], ImprovementPercentage[1],ImprovementPercentage[2]);
-    printf("The velocity should change by %lf, %lf, and %lf for each direction, however floating point makes this impossible.", deltaV[0],deltaV[1],deltaV[2]);
-   
-    return 0;
+    printf("The velocity should change by %lf, %lf, and %lf for each direction, however floating point makes this impossible.\n", deltaV[0],deltaV[1],deltaV[2]);
+    printf("\nReformating to match the other style.\n");
+    for (int j = 0; j<numbPlanets; j++)
+    {
+        NewSimPlanets.body[j].name = SimPlanets.body[j].strName;
+        
+        printf("the name of the new planet is %s\n",NewSimPlanets.body[j].name);
+        NewSimPlanets.body[j].mass = SimPlanets.body[j].mass;
+        NewSimPlanets.body[j].acc3D.x = 0;
+        NewSimPlanets.body[j].acc3D.y = 0;
+        NewSimPlanets.body[j].acc3D.z = 0;
+    
+        for (int i = 0; i < dimentions; i++)
+        {
+            if (i==0)
+            {
+                NewSimPlanets.body[j].vel3D.x = SimPlanets.body[j].xvel;
+                NewSimPlanets.body[j].pos3D.x = SimPlanets.body[j].xpos;
+            }
+            if (i==1)
+            {
+                NewSimPlanets.body[j].vel3D.y = SimPlanets.body[j].yvel;
+                NewSimPlanets.body[j].pos3D.y = SimPlanets.body[j].ypos;
+            }
+            if (i==2)
+            {
+                NewSimPlanets.body[j].vel3D.z = SimPlanets.body[j].zvel;
+                NewSimPlanets.body[j].pos3D.z = SimPlanets.body[j].zpos;
+            }
+
+        }
+    }
+    printf("Reformating complete. \n");
+    printf("Creating a list of pointers to complete the transition\n");
+    struct Planet3D *pointerPlanet[230];
+
+
+    for (int j = 0; j<numbPlanets; j++)
+    {
+        pointerPlanet[j] = &NewSimPlanets.body[j];
+        printf("%p is the location of the converted planet.\n",pointerPlanet[j]);
+    }
+
+    return pointerPlanet;
 }
