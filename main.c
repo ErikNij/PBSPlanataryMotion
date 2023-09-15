@@ -1,5 +1,5 @@
-#include <stdio.h>          /* standard c input/output library */
-#include <stdlib.h>         /* standard c library */
+#include <stdio.h>  /* standard c input/output library */
+#include <stdlib.h> /* standard c library */
 #include "Planet.h"
 #include "Vectors.h"
 #include "LoadDatFile.h"
@@ -9,57 +9,38 @@ int main()
 {
     printf("Starting simulation...\n");
 
-    
     // Constants
-    double t_sim = 10000000; // s
-    double dt = 50; // s
-    int N_PLANETS = 5;
+    double t_sim = 5000000; // s
+    double dt = 2500;       // s
+    int N_PLANETS = 89;
     int numbPlanets = N_PLANETS;
-    //char fileNames[36*230];
+    // char fileNames[36*230];
     char currentFileName[36];
-
+    char *folderName = "createdData";
     // Declare an arrays of pointers
     struct Vector3D *force[N_PLANETS];
-    struct Planet3D *planets[N_PLANETS]; 
-    
+    struct Planet3D *planets[N_PLANETS];
 
-    
-    for (int i = 0; i < N_PLANETS; i++) {
-        force[i] = (struct Vector3D *) malloc(sizeof(struct Vector3D));
-        planets[i] = (struct Planet3D *) malloc(sizeof(struct Planet3D));
+    for (int i = 0; i < N_PLANETS; i++)
+    {
+        force[i] = (struct Vector3D *)malloc(sizeof(struct Vector3D));
+        planets[i] = (struct Planet3D *)malloc(sizeof(struct Planet3D));
     }
 
-    getData(planets,N_PLANETS);
-
+    getData(planets, N_PLANETS);
 
     printf("Total simulation time: %0.2lf seconds, time step: %0.2lf\n", t_sim, dt);
 
-    void * filePointers[230];
+    void *filePointers[230];
 
-    for(int i = 0; i < N_PLANETS; i++)
+    for (int i = 0; i < N_PLANETS; i++)
     {
-        for(int j = 0; j < 32; j++)
-        {
-            currentFileName[j] = planets[i]->name[j];
-            printf("%d",planets[i]->name);
-        }
-        //printf("%s",currentFileName[0]);
-        currentFileName[31+1] = '.';
-        currentFileName[31+2] = 't';
-        currentFileName[31+3] = 'x';
-        currentFileName[31+4] = 't';
+        snprintf(currentFileName, sizeof(currentFileName), "%s/%s.txt", folderName, planets[i]->name);
         filePointers[i] = fopen(currentFileName, "w");
     }
 
-
-    //void * fptr_sun = fopen("sun.txt", "w");
-    //void * fptr_mecur = fopen("mecur.txt", "w");    
-
-    // Add pointers to planets and planet files to array, Making sure they are added in the same order
-    //struct Planet3D * planets[] = {&sun, &earth};
-
     // Print starting positions of planets
-    for(int i=0; i<N_PLANETS; i++)
+    for (int i = 0; i < N_PLANETS; i++)
     {
         printf("starting position %s: {%f,%f,%f}\n", planets[i]->name, planets[i]->pos3D.x, planets[i]->pos3D.y, planets[i]->pos3D.z);
     }
@@ -67,34 +48,46 @@ int main()
     // Run sumulations
     int i = 0;
 
-    for(double t=0; t<t_sim; t=t+dt)
+    for (double t = 0; t < t_sim; t = t + dt)
     {
-        updatePlanets3D(planets,force, N_PLANETS, dt);
+        updatePlanets3D(planets, force, N_PLANETS, dt);
         // To avoid too large files, only write every 100th data point
-        if(i%1000 == 0)
+        if (i % 40 == 0)
         {
             // Save planet positions to files
-            for(int j=0; j<N_PLANETS; j++)
+            for (int j = 0; j < N_PLANETS; j++)
             {
-                //printf("about to save");
-                fprintf(filePointers[j], "%0.2lf,%0.2lf,%0.2lf,%0.2lf,%0.2lf,%0.2lf,%0.2lf\n", t, planets[j]->pos3D.x, planets[j]->pos3D.y, planets[j]->pos3D.z, planets[j]->vel3D.x, planets[j]->vel3D.y, planets[j]->vel3D.z);    
-            } 
+                // printf("about to save");
+                fprintf(filePointers[j], "%0.2lf,%0.2lf,%0.2lf,%0.2lf,%0.2lf,%0.2lf,%0.2lf\n",
+                        t, planets[j]->pos3D.x, planets[j]->pos3D.y, planets[j]->pos3D.z,
+                        planets[j]->vel3D.x, planets[j]->vel3D.y, planets[j]->vel3D.z);
+            }
+
+            // Flush the buffer to write data to the file immediately
+            if (i % 80 == 0)
+            {
+                for (int j = 0; j < N_PLANETS; j++)
+                {
+                    fflush(filePointers[j]);
+                }
+            }
+            // printf("Done flushing");
         }
-        i++;        
+        i++;
     }
 
     // Print final positions of planets
-    for(int i=0; i<N_PLANETS; i++)
+    for (int i = 0; i < N_PLANETS; i++)
     {
-        printf("Final position %s: {%f,%f,%f}\n", planets[i]->name, planets[i]->pos3D.x, planets[i]->pos3D.y,  planets[i]->pos3D.z);
+        printf("Final position %s: {%f,%f,%f}\n", planets[i]->name, planets[i]->pos3D.x, planets[i]->pos3D.y, planets[i]->pos3D.z);
     }
 
     // Close files
-    for(int i=0; i<N_PLANETS; i++)
+    for (int i = 0; i < N_PLANETS; i++)
     {
         fclose(filePointers[i]);
     }
-    
+
     printf("Simulation finished!\n");
 
     return 0;
