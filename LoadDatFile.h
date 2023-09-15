@@ -16,7 +16,7 @@ void getData (struct Planet3D *planets[], int numbPlanets)
     double VelToCal = 0;
     if (numbPlanets > 230)
     {
-        printf("Maximum number of planets to simulate is 230, you entered, %d. Simulation set for 230 planets.",numbPlanets);
+        printf("Maximum number of planets to simulate is 230, you entered, %d. Simulation set for 230 planets.\n",numbPlanets);
         numbPlanets = 230;
     };
     //Allocating memory for the planet array
@@ -30,7 +30,7 @@ void getData (struct Planet3D *planets[], int numbPlanets)
     file = fopen(fileToOpen,"rb");
     if (file == NULL)
     {
-        printf("Your file is wrong you goof");
+        printf("Your file is wrong you goof\n");
         exit(1);
     }
     // looping over everyline to grab the stuff
