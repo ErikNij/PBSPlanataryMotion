@@ -45,7 +45,7 @@ int main()
         currentFileName[31+2] = 't';
         currentFileName[31+3] = 'x';
         currentFileName[31+4] = 't';
-        char filePath[] = "planets/";
+        char filePath[30] = "planets/";
         strcat(filePath, currentFileName);
         filePointers[i] = fopen(filePath, "w");
     }
