@@ -19,7 +19,7 @@ struct Planet3D
     struct Vector3D vel3D;
     struct Vector3D acc3D;
     double mass;
-    char *name;
+    char name[32];
 };
 
 struct Planet 
@@ -65,7 +65,7 @@ struct Vector3D CalcGravityForce3D(struct Planet3D * part1, struct Planet3D * pa
 
     struct Vector3D direction = {distanceVec.x/distanceMagnitude, distanceVec.y/distanceMagnitude, distanceVec.z/distanceMagnitude};        
 
-    double gravConst = 6.6743015 * pow(10, -11);
+    double gravConst = -6.6743015 * pow(10, -11);
     double forceMagnitude = (gravConst) * (part1->mass * part2->mass) / inProdVec3D(&distanceVec, &distanceVec);
     
     struct Vector3D force = {forceMagnitude * direction.x, forceMagnitude * direction.y, forceMagnitude * direction.z};    
@@ -120,13 +120,9 @@ void updatePlanets3D(struct Planet3D * planets[], struct Vector3D * force[], int
 {
     //Calculating half a time step
     double hdt = dt/2;
-
-    
-
     
     for(int i=0; i<N; i++)
     {
-
         //Calculating forces at t = t
         CalcForces(force,planets,N);
 

@@ -11,14 +11,18 @@ int main()
 
     
     // Constants
-    double t_sim = 10000; // s
-    double dt = 0.01; // s
+    double t_sim = 10000000; // s
+    double dt = 50; // s
     int N_PLANETS = 2;
     int numbPlanets = N_PLANETS;
+    //char fileNames[36*230];
+    char currentFileName[36];
 
-    // Declare an array of pointers
+    // Declare an arrays of pointers
     struct Vector3D *force[N_PLANETS];
-    struct Planet3D *planets[N_PLANETS];
+    struct Planet3D *planets[N_PLANETS]; 
+    
+
     
     for (int i = 0; i < N_PLANETS; i++) {
         force[i] = (struct Vector3D *) malloc(sizeof(struct Vector3D));
@@ -30,12 +34,29 @@ int main()
 
     printf("Total simulation time: %0.2lf seconds, time step: %0.2lf\n", t_sim, dt);
 
-    void * fptr_sun = fopen("sun.txt", "w");
-    void * fptr_mecur = fopen("mecur.txt", "w");    
+    void * filePointers[230];
+
+    for(int i = 0; i < N_PLANETS; i++)
+    {
+        for(int j = 0; j < 32; j++)
+        {
+            currentFileName[j] = planets[i]->name[j];
+            printf("%d",planets[i]->name);
+        }
+        //printf("%s",currentFileName[0]);
+        currentFileName[31+1] = '.';
+        currentFileName[31+2] = 't';
+        currentFileName[31+3] = 'x';
+        currentFileName[31+4] = 't';
+        filePointers[i] = fopen(currentFileName, "w");
+    }
+
+
+    //void * fptr_sun = fopen("sun.txt", "w");
+    //void * fptr_mecur = fopen("mecur.txt", "w");    
 
     // Add pointers to planets and planet files to array, Making sure they are added in the same order
     //struct Planet3D * planets[] = {&sun, &earth};
-    void * filePointers[] = {fptr_sun, fptr_mecur};
 
     // Print starting positions of planets
     for(int i=0; i<N_PLANETS; i++)
@@ -55,8 +76,9 @@ int main()
             // Save planet positions to files
             for(int j=0; j<N_PLANETS; j++)
             {
+                //printf("about to save");
                 fprintf(filePointers[j], "%0.2lf,%0.2lf,%0.2lf,%0.2lf,%0.2lf,%0.2lf,%0.2lf\n", t, planets[j]->pos3D.x, planets[j]->pos3D.y, planets[j]->pos3D.z, planets[j]->vel3D.x, planets[j]->vel3D.y, planets[j]->vel3D.z);    
-            }
+            } 
         }
         i++;        
     }

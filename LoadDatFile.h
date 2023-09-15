@@ -67,6 +67,18 @@ void getData (struct Planet3D *planets[], int numbPlanets)
         {
             SimPlanets.body[i].mass = 1;
         }
+        //Setting the sun to the center of the simulation
+        if (i!=0)
+        {
+            SimPlanets.body[i].xpos = SimPlanets.body[i].xpos - SimPlanets.body[0].xpos;
+            SimPlanets.body[i].ypos = SimPlanets.body[i].ypos - SimPlanets.body[0].ypos;
+            SimPlanets.body[i].zpos = SimPlanets.body[i].zpos - SimPlanets.body[0].zpos; 
+        }
+        
+        SimPlanets.body[0].xpos = 0;
+        SimPlanets.body[0].ypos = 0;
+        SimPlanets.body[0].zpos = 0;
+
         //Finding the total momentum
         for (int j=0; j<3; j++)
         {
@@ -110,8 +122,11 @@ void getData (struct Planet3D *planets[], int numbPlanets)
     
     printf("\nReformating to match the other style.\n");
     for (int j = 0; j<numbPlanets; j++)
-    {
-        NewSimPlanets.body[j].name = SimPlanets.body[j].strName;
+    {   
+        for (int k = 0; k < 32; k++)
+        {
+            NewSimPlanets.body[j].name[k] = SimPlanets.body[j].strName[k];
+        }
         printf("the name of the new planet is %s\n",NewSimPlanets.body[j].name);
         NewSimPlanets.body[j].mass = SimPlanets.body[j].mass;
         NewSimPlanets.body[j].acc3D.x = 0;
@@ -135,8 +150,7 @@ void getData (struct Planet3D *planets[], int numbPlanets)
     for (int j = 0; j<numbPlanets; j++)
     {
         planets[j] = &NewSimPlanets.body[j];
-        printf("%p is the location of the converted planet.\n",planets[j]);
-        printf("The x postion of the stored planet is %f\n",planets[j]->pos3D.x);
+        printf("%s is now stored at %p \n",planets[j]->name, planets[j]);
     }
     //planets = pointerPlanet;
 
