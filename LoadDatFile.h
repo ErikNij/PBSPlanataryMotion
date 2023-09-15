@@ -22,6 +22,7 @@ void getData (struct Planet3D *planets[], int numbPlanets)
     //Allocating memory for the planet array
     SimPlanets.body = (struct Planet *) malloc((numbPlanets)*sizeof(struct Planet));
     NewSimPlanets.body = (struct Planet3D *) malloc((numbPlanets)*sizeof(struct Planet3D));
+    
     //Reading the  file
     const int nMax = 1024;
     char line[nMax];

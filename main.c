@@ -3,6 +3,8 @@
 #include "Planet.h"
 #include "Vectors.h"
 #include "LoadDatFile.h"
+#include <string.h>
+
 #define DIMENSIONS 3
 
 int main()
@@ -20,7 +22,7 @@ int main()
     struct Vector3D *force[N_PLANETS];
     struct Planet3D *planets[N_PLANETS]; 
     
-    for (int i = 0; i < N_PLANETS; i++) {
+    for (int i = 0; i < N_PLANETS; i++){
         force[i] = (struct Vector3D *) malloc(sizeof(struct Vector3D));
         planets[i] = (struct Planet3D *) malloc(sizeof(struct Planet3D));
     }
@@ -29,21 +31,23 @@ int main()
 
     printf("Total simulation time: %0.2lf seconds, time step: %0.2lf\n", t_sim, dt);
 
-    void * filePointers[230];
+    void * filePointers[N_PLANETS];
 
     for(int i = 0; i < N_PLANETS; i++)
     {
         for(int j = 0; j < 32; j++)
         {
             currentFileName[j] = planets[i]->name[j];
-            //printf("%d",planets[i]->name);
+            //printf("%s",planets[i]->name);
         }
         //printf("%s",currentFileName[0]);
         currentFileName[31+1] = '.';
         currentFileName[31+2] = 't';
         currentFileName[31+3] = 'x';
         currentFileName[31+4] = 't';
-        filePointers[i] = fopen(currentFileName, "w");
+        char filePath[] = "planets/";
+        strcat(filePath, currentFileName);
+        filePointers[i] = fopen(filePath, "w");
     }
 
     /*
@@ -85,7 +89,7 @@ int main()
     {
         fclose(filePointers[i]);
     }
-
+    
     printf("Simulation finished!\n");
 
     return 0;
