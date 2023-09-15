@@ -13,7 +13,7 @@ int main()
     // Constants
     double t_sim = 10000000; // s
     double dt = 50; // s
-    int N_PLANETS = 2;
+    int N_PLANETS = 5;
     int numbPlanets = N_PLANETS;
     //char fileNames[36*230];
     char currentFileName[36];

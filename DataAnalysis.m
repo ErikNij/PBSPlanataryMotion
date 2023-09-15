@@ -1,14 +1,8 @@
 clear;
 close all;
-
-sun_data = readmatrix("Sun");
-earth_data = readmatrix("Mercury");
-
-%figure();
-plot(earth_data(:,2), earth_data(:,3));
-%title("Earth");
+PlanetsToLoad = ["Sun","Mercury","Venus","Earth","Moon"];
 hold on
-
-%figure();
-plot(sun_data(:,2), sun_data(:,3));
-%title("Sun");
+for i = 1:5
+    data = readmatrix(PlanetsToLoad(i));
+    plot(data(:,2), data(:,3));
+end
