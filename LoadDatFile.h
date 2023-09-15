@@ -22,16 +22,16 @@ void getData (struct Planet3D *planets[], int numbPlanets)
     //Allocating memory for the planet array
     SimPlanets.body = (struct Planet *) malloc((numbPlanets)*sizeof(struct Planet));
     NewSimPlanets.body = (struct Planet3D *) malloc((numbPlanets)*sizeof(struct Planet3D));
-    
+
     //Reading the  file
     const int nMax = 1024;
     char line[nMax];
     FILE *file = NULL;
-    char *fileToOpen = "solar_system_13sept2021.dat";
+    char fileToOpen[] = "solar_system_13sept2021.dat";
     file = fopen(fileToOpen,"rb");
     if (file == NULL)
     {
-        printf("Your file is wrong you goof\n");
+        printf("%s could not be found!\n", fileToOpen);
         exit(1);
     }
     // looping over everyline to grab the stuff
