@@ -53,7 +53,7 @@ int main()
     }
     */
     
-    printf("Beun loading bar:\n");
+    printf("TEMPORARY loading bar:\n");
 
     for (int j = 0; j < numberOfPLotPoints; j++)
     {

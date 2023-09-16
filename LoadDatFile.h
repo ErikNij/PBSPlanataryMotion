@@ -61,8 +61,8 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
                        &SimPlanets.body[j].xvel,
                        &SimPlanets.body[j].yvel,
                        &SimPlanets.body[j].zvel);
-                printf("loaded %s with ID %d. This is planet #%d for us!\n", SimPlanets.body[j].strName, SimPlanets.body[j].id, j + 1);
-                printf("The stored x postion is %f\n", SimPlanets.body[j].xpos);
+                //printf("loaded %s with ID %d. This is planet #%d for us!\n", SimPlanets.body[j].strName, SimPlanets.body[j].id, j + 1);
+                //printf("The stored x postion is %f\n", SimPlanets.body[j].xpos);
                 j = j + 1;
             }
         }
@@ -113,8 +113,8 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
         }
         totalMass = totalMass + SimPlanets.body[i].mass;
     }
-    printf("The momentum in the x,y, and z direction is %lf , %lf , and, %lf kg * m/s. \n", momentum[0], momentum[1], momentum[2]);
-    printf("The mass of the solar system is %lf kg. that is almost as heavy as my backpack!\n", totalMass);
+    //printf("The momentum in the x,y, and z direction is %lf , %lf , and, %lf kg * m/s. \n", momentum[0], momentum[1], momentum[2]);
+    //printf("The mass of the solar system is %lf kg. that is almost as heavy as my backpack!\n", totalMass);
     for (int i = 0; i < 3; i++)
     {
         deltaV[i] = momentum[i] / totalMass;
@@ -143,23 +143,23 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
             NewMomentum[j] = NewMomentum[j] + (SimPlanets.body[i].mass * VelToCal);
         }
     }
-    printf("The new momentum in the x,y, and z direction is %lf , %lf , and, %lf kg * m/s. \n", NewMomentum[0], NewMomentum[1], NewMomentum[2]);
+    //printf("The new momentum in the x,y, and z direction is %lf , %lf , and, %lf kg * m/s. \n", NewMomentum[0], NewMomentum[1], NewMomentum[2]);
     for (int i = 0; i < dimentions; i++)
     {
         ImprovementPercentage[i] = (momentum[i] - NewMomentum[i]) / momentum[i] * 100;
         deltaV[i] = NewMomentum[i] / totalMass;
     }
-    printf("That is an improvement of %lf, %lf, and %lf for each direction. \n", ImprovementPercentage[0], ImprovementPercentage[1], ImprovementPercentage[2]);
-    printf("The velocity should change by %lf, %lf, and %lf for each direction, however floating point makes this impossible.\n", deltaV[0], deltaV[1], deltaV[2]);
+    //printf("That is an improvement of %lf, %lf, and %lf for each direction. \n", ImprovementPercentage[0], ImprovementPercentage[1], ImprovementPercentage[2]);
+    //printf("The velocity should change by %lf, %lf, and %lf for each direction, however floating point makes this impossible.\n", deltaV[0], deltaV[1], deltaV[2]);
 
-    printf("\nReformating to match the other style.\n");
+    //printf("\nReformating to match the other style.\n");
     for (int j = 0; j < numbPlanets; j++)
     {
         for (int k = 0; k < 32; k++)
         {
             NewSimPlanets.body[j].name[k] = SimPlanets.body[j].strName[k];
         }
-        printf("the name of the new planet is %s\n", NewSimPlanets.body[j].name);
+        //printf("the name of the new planet is %s\n", NewSimPlanets.body[j].name);
         NewSimPlanets.body[j].mass = SimPlanets.body[j].mass;
         NewSimPlanets.body[j].acc3D.x = 0;
         NewSimPlanets.body[j].acc3D.y = 0;
@@ -174,15 +174,15 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
         NewSimPlanets.body[j].vel3D.z = SimPlanets.body[j].zvel;
         NewSimPlanets.body[j].pos3D.z = SimPlanets.body[j].zpos;
 
-        printf("The new stored x postion is %f\n", NewSimPlanets.body[j].pos3D.x);
+        //printf("The new stored x postion is %f\n", NewSimPlanets.body[j].pos3D.x);
     }
-    printf("Reformation complete. \n");
-    printf("Creating a list of pointers to complete the transition\n");
+    //printf("Reformation complete. \n");
+    //printf("Creating a list of pointers to complete the transition\n");
     // struct Planet3D *pointerPlanet[230];
     for (int j = 0; j < numbPlanets; j++)
     {
         planets[j] = &NewSimPlanets.body[j];
-        printf("%s is now stored at %p \n", planets[j]->name, planets[j]);
+        //printf("%s is now stored at %p \n", planets[j]->name, planets[j]);
     }
     // planets = pointerPlanet;
 
