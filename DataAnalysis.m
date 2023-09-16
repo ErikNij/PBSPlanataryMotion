@@ -1,15 +1,30 @@
-import numpy as np
-import matplotlib.pyplot as plt
+clear;
+close all;
 
-planets_to_load = ["Sun", "Mercury", "Venus", "Earth", "Moon"]
 
-for planet in planets_to_load:
-    data = np.loadtxt(planet + ".txt")
-    plt.plot(data[:, 1], data[:, 2])
+directory = "planets/";
+%directory = "createdData/";
+files = dir(directory + "*");
 
-plt.xlabel("X Coordinate")
-plt.ylabel("Y Coordinate")
-plt.title("Planet Orbits")
-plt.grid(True)
-plt.legend(planets_to_load)
-plt.show()
+%check if any files are in this directory
+if isempty(files)
+    error("No files found in 'Data/'");
+end
+
+%gather filenames of all .dat files present
+for i = 1:length(files)
+    filenames{i} = convertCharsToStrings(files(i).name);
+end
+
+hold on
+for i = 3:size(files(:,1))
+    filePath = directory + filenames(i);
+    try
+        %data = load(filePath, "-ascii");
+        %data = load(filePath);
+        data = readmatrix(filePath);
+        plot(data(:,2), data(:,3));
+    catch
+    end
+end
+legend(filenames(3:end), 'Location','bestoutside');
