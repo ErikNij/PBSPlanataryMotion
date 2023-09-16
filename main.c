@@ -10,11 +10,11 @@ int main()
     printf("Starting simulation...\n");
 
     // Constants
-    double t_sim = 10000000; // s
-    double dt = 2000;        // s
-    int numberOfPLotPoints = 50;
+    double t_sim = 365 * 24 * 60 * 60; // s
+    double dt = 24 * 60 * 2;           // s
+    int numberOfPLotPoints = 365 / 5;
     int itrWOsaving = floor(t_sim / dt / numberOfPLotPoints);
-    int N_PLANETS = 89;
+    int N_PLANETS = 171;
     int numbPlanets = N_PLANETS;
     // char fileNames[36*230];
     char currentFileName[36];
@@ -22,14 +22,17 @@ int main()
     // Declare an arrays of pointers
     struct Vector3D *force[N_PLANETS];
     struct Planet3D *planets[N_PLANETS];
+    struct Planet3D *planetsEnd[N_PLANETS];
 
     for (int i = 0; i < N_PLANETS; i++)
     {
         force[i] = (struct Vector3D *)malloc(sizeof(struct Vector3D));
         planets[i] = (struct Planet3D *)malloc(sizeof(struct Planet3D));
+        planetsEnd[i] = (struct Planet3D *)malloc(sizeof(struct Planet3D));
     }
 
-    getData(planets, N_PLANETS);
+    getData(planets, N_PLANETS, 1);
+    getData(planetsEnd, N_PLANETS, 0);
 
     printf("Total simulation time: %0.2lf seconds, time step: %0.2lf\n", t_sim, dt);
 
@@ -92,7 +95,7 @@ int main()
         printf("Final position %s: {%f,%f,%f}\n", planets[i]->name, planets[i]->pos3D.x, planets[i]->pos3D.y, planets[i]->pos3D.z);
     }
 
-    // Close files
+        // Close files
     for (int i = 0; i < N_PLANETS; i++)
     {
         fclose(filePointers[i]);
