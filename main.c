@@ -14,11 +14,11 @@ int main()
     // Constants
     double t_sim = 10000000; // s
     double dt = 50; // s
-    int N_PLANETS = 5;
-    //char fileNames[36*230];
-    char currentFileName[36];
+    int N_PLANETS = 20;
+    char * currentFileName = malloc(20*sizeof(char));
+    char fileExtension[] = ".txt";
 
-    // Declare an arrays of pointers
+    // Declare arrays of pointers
     struct Vector3D *force[N_PLANETS];
     struct Planet3D *planets[N_PLANETS]; 
     
@@ -34,17 +34,10 @@ int main()
     void * filePointers[N_PLANETS];
 
     for(int i = 0; i < N_PLANETS; i++)
-    {
-        for(int j = 0; j < 32; j++)
-        {
-            currentFileName[j] = planets[i]->name[j];
-            //printf("%s",planets[i]->name);
-        }
-        //printf("%s",currentFileName[0]);
-        currentFileName[31+1] = '.';
-        currentFileName[31+2] = 't';
-        currentFileName[31+3] = 'x';
-        currentFileName[31+4] = 't';
+    {       
+        strcpy(currentFileName, planets[i]->name);
+        strcat(currentFileName, fileExtension);
+
         char filePath[30] = "planets/";
         strcat(filePath, currentFileName);
         filePointers[i] = fopen(filePath, "w");

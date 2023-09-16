@@ -10,7 +10,7 @@ struct Planet3D
     struct Vector3D vel3D;
     struct Vector3D acc3D;
     double mass;
-    char name[32];
+    char name[20];
 };
 
 struct Planet 

@@ -1,7 +1,10 @@
 clear;
 close all;
 
-files = dir("planets/*");
+
+directory = "planets/";
+%directory = "createdData/";
+files = dir(directory + "*");
 
 %check if any files are in this directory
 if isempty(files)
@@ -15,7 +18,13 @@ end
 
 hold on
 for i = 3:size(files(:,1))
-    data = readmatrix("planets/" + filenames(i));
-    plot(data(:,2), data(:,3));
+    filePath = directory + filenames(i);
+    try
+        %data = load(filePath, "-ascii");
+        %data = load(filePath);
+        data = readmatrix(filePath);
+        plot(data(:,2), data(:,3));
+    catch
+    end
 end
 legend(filenames(3:end), 'Location','bestoutside');
