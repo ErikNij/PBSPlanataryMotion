@@ -10,8 +10,10 @@ int main()
     printf("Starting simulation...\n");
 
     // Constants
-    double t_sim = 5000000; // s
-    double dt = 2500;       // s
+    double t_sim = 10000000; // s
+    double dt = 2000;        // s
+    int numberOfPLotPoints = 50;
+    int itrWOsaving = floor(t_sim / dt / numberOfPLotPoints);
     int N_PLANETS = 89;
     int numbPlanets = N_PLANETS;
     // char fileNames[36*230];
@@ -46,36 +48,44 @@ int main()
     }
 
     // Run sumulations
+    printf("Beun loading bar:\n");
+
+    for (int j = 0; j < numberOfPLotPoints; j++)
+    {
+        printf("|");
+    }
+    printf("\n");
     int i = 0;
 
     for (double t = 0; t < t_sim; t = t + dt)
     {
         updatePlanets3D(planets, force, N_PLANETS, dt);
         // To avoid too large files, only write every 100th data point
-        if (i % 40 == 0)
+        if (i % itrWOsaving == 0)
         {
-            // Save planet positions to files
+            // printf("about to save");
+            //  Save planet positions to files
             for (int j = 0; j < N_PLANETS; j++)
             {
-                // printf("about to save");
+
                 fprintf(filePointers[j], "%0.2lf,%0.2lf,%0.2lf,%0.2lf,%0.2lf,%0.2lf,%0.2lf\n",
                         t, planets[j]->pos3D.x, planets[j]->pos3D.y, planets[j]->pos3D.z,
                         planets[j]->vel3D.x, planets[j]->vel3D.y, planets[j]->vel3D.z);
             }
 
             // Flush the buffer to write data to the file immediately
-            if (i % 80 == 0)
+            if (i % itrWOsaving == 0)
             {
                 for (int j = 0; j < N_PLANETS; j++)
                 {
                     fflush(filePointers[j]);
                 }
             }
-            // printf("Done flushing");
+            printf("|");
         }
         i++;
     }
-
+    printf("\n");
     // Print final positions of planets
     for (int i = 0; i < N_PLANETS; i++)
     {
