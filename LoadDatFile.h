@@ -51,7 +51,7 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
             if (j <= numbPlanets)
             {
                 j = j - 1;
-                sscanf(line, "%d %s %lf %lf %lf %lf %lf %lf",
+                sscanf(line, "%d %s %lf %Lf %Lf %Lf %Lf %Lf",
                        &SimPlanets.body[j].id,
                        SimPlanets.body[j].strName,
                        &SimPlanets.body[j].mass,
@@ -62,7 +62,7 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
                        &SimPlanets.body[j].yvel,
                        &SimPlanets.body[j].zvel);
                 printf("loaded %s with ID %d. This is planet #%d for us!\n", SimPlanets.body[j].strName, SimPlanets.body[j].id, j + 1);
-                printf("The stored x postion is %f\n", SimPlanets.body[j].xpos);
+                printf("The stored x postion is %Lf\n", SimPlanets.body[j].xpos);
                 j = j + 1;
             }
         }
@@ -70,7 +70,7 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
     }
     file = fopen("solar_system_13sept2021.dat", "rb");
     fgets(line, nMax, file);
-    sscanf(line, "%d %s %lf %lf %lf %lf %lf %lf",
+    sscanf(line, "%d %s %lf %Lf %Lf %Lf %Lf %Lf",
            &Sun2021Pos.id,
            Sun2021Pos.strName,
            &Sun2021Pos.mass,

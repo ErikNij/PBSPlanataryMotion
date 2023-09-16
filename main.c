@@ -10,11 +10,11 @@ int main()
     printf("Starting simulation...\n");
 
     // Constants
-    double t_sim = 365 * 24 * 60 * 60; // s
-    double dt = 24 * 60 * 2;           // s
+    double t_sim = 365 * 24 * 15; // s
+    double dt = 24;               // s
     int numberOfPLotPoints = 365 / 5;
     int itrWOsaving = floor(t_sim / dt / numberOfPLotPoints);
-    int N_PLANETS = 171;
+    int N_PLANETS = 5;
     int numbPlanets = N_PLANETS;
     // char fileNames[36*230];
     char currentFileName[36];
@@ -92,10 +92,15 @@ int main()
     // Print final positions of planets
     for (int i = 0; i < N_PLANETS; i++)
     {
-        printf("Final position %s: {%f,%f,%f}\n", planets[i]->name, planets[i]->pos3D.x, planets[i]->pos3D.y, planets[i]->pos3D.z);
+        // printf("Final position %s: {%f,%f,%f}\n", planets[i]->name, planets[i]->pos3D.x, planets[i]->pos3D.y, planets[i]->pos3D.z);
+        printf("Position inaccuracy %s: {%f,%f,%f}\n",
+               planets[i]->name,
+               (planets[i]->pos3D.x - planetsEnd[i]->pos3D.x) / planets[i]->pos3D.x * 100,
+               (planets[i]->pos3D.y - planetsEnd[i]->pos3D.y) / planets[i]->pos3D.y * 100,
+               (planets[i]->pos3D.z - planetsEnd[i]->pos3D.z) / planets[i]->pos3D.z * 100);
     }
 
-        // Close files
+    // Close files
     for (int i = 0; i < N_PLANETS; i++)
     {
         fclose(filePointers[i]);
