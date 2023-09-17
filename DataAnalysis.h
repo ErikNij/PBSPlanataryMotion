@@ -4,6 +4,7 @@
 #include "Vectors.h"
 
 void KEandPE(struct Planet3D *planets[], int numbPlanets, double t, FILE *filePointer)
+
 {
     double KE[230];
     double PE[230];
@@ -49,4 +50,18 @@ void KEandPE(struct Planet3D *planets[], int numbPlanets, double t, FILE *filePo
 
     fprintf(filePointer, "%lf, %lf,%lf,%lf,%lf,%lf,%lf\n",
             t, SumPE, SumKE, SumE, SumPEWithoutM, SumKEWithoutM, SumEWithoutM);
+}
+
+void FinalPostion(struct Planet3D *planets[], struct Planet3D *planetsEnd[], int numbPlanets, FILE *filePointer)
+{
+    struct Vector3D dr;
+    double percentOff;
+
+    for (int i = 0; i < numbPlanets; i++)
+    {
+        dr = subVec3D(&planets[i]->pos3D, &planetsEnd[i]->pos3D);
+        percentOff = fabs(dr.x / planetsEnd[i]->pos3D.x) + fabs(dr.y / planetsEnd[i]->pos3D.y);
+        fprintf(filePointer, "%s, %lf, %lf\n",
+                planets[i]->name, dr.x + dr.y, percentOff);
+    }
 }
