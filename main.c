@@ -3,6 +3,7 @@
 #include "Planet.h"
 #include "Vectors.h"
 #include "LoadDatFile.h"
+#include "DataAnalysis.h"
 #define dimentions 3
 
 int main()
@@ -10,11 +11,11 @@ int main()
     printf("Starting simulation...\n");
 
     // Constants
-    double t_sim = 365 * 24 * 15; // s
-    double dt = 24;               // s
+    double t_sim = 365 * 24 * 60; // s
+    double dt = 10;               // s
     int numberOfPLotPoints = 365 / 5;
     int itrWOsaving = floor(t_sim / dt / numberOfPLotPoints);
-    int N_PLANETS = 5;
+    int N_PLANETS = 230;
     int numbPlanets = N_PLANETS;
     // char fileNames[36*230];
     char currentFileName[36];
@@ -37,7 +38,8 @@ int main()
     printf("Total simulation time: %0.2lf seconds, time step: %0.2lf\n", t_sim, dt);
 
     void *filePointers[230];
-
+    FILE *filePointerEnergy;
+    filePointerEnergy = fopen("EnergyOverTime.txt", "w");
     for (int i = 0; i < N_PLANETS; i++)
     {
         snprintf(currentFileName, sizeof(currentFileName), "%s/%s.txt", folderName, planets[i]->name);
@@ -75,6 +77,7 @@ int main()
                         t, planets[j]->pos3D.x, planets[j]->pos3D.y, planets[j]->pos3D.z,
                         planets[j]->vel3D.x, planets[j]->vel3D.y, planets[j]->vel3D.z);
             }
+            KEandPE(planets, N_PLANETS, t, filePointerEnergy);
 
             // Flush the buffer to write data to the file immediately
             if (i % itrWOsaving == 0)

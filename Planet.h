@@ -20,6 +20,7 @@ struct Planet3D
     struct Vector3D acc3D;
     double mass;
     char name[32];
+    int id;
 };
 
 struct Planet
@@ -114,12 +115,85 @@ void CalcForces(struct Vector3D *force[], struct Planet3D *planets[], int N)
     }
 }
 
+void CalcForcesFast(struct Vector3D *force[], struct Planet3D *planets[], int N)
+
+{
+    int system[230];
+    struct Vector3D forceContribution;
+    // Setting the system of the planets
+    for (int i = 0; i < N; i++)
+    {
+        if (planets[i]->id < 1000)
+        {
+            system[i] = planets[i]->id / 100;
+        }
+        else
+        {
+            system[i] = planets[i]->id / 10000;
+        }
+    }
+    // Doing the force calcuations
+    // Looping over every planet
+    for (int i = 0; i < N; i++)
+    {
+        // Setting the force at the start to 0
+        // The sun has influnce on everything
+        if (planets[i]->id == 10)
+        {
+            // Setting the force on the Sun to 0
+            *force[i] = subVec3D(force[i], force[i]);
+            for (int j = 1; j < N; j++)
+            {
+                // Setting the force of the planet to 0
+                *force[j] = subVec3D(force[j], force[j]);
+                forceContribution = CalcGravityForce3D(planets[i], planets[j]);
+                *force[i] = sumVec3D(force[i], &forceContribution);
+                // The force on the planet is oppisete of the sun
+                *force[j] = subVec3D(force[j], &forceContribution);
+            }
+        }
+        // Loop for planets \/
+        else
+        {
+            // Jupiter's pull is also omnipresent
+            if (planets[i]->id == 599)
+            {
+                for (int j = 1; j < N; j++)
+                {
+                    // don't double update Jupiter's system
+                    if (system[j] != 5)
+                    {
+                        forceContribution = CalcGravityForce3D(planets[i], planets[j]);
+                        *force[i] = sumVec3D(force[i], &forceContribution);
+                        // The force on the planet is oppisete of the Juipter
+                        *force[j] = subVec3D(force[j], &forceContribution);
+                    }
+                }
+            }
+            else
+            {
+                // NOTE: Looping from i+1 onwards.
+                for (int j = i + 1; j < N; j++)
+                {
+                    // Only calc forces if they are in the same system
+                    if (system[i] == system[j])
+                    {
+                        forceContribution = CalcGravityForce3D(planets[i], planets[j]);
+                        *force[i] = sumVec3D(force[i], &forceContribution);
+                        // The force on the planet is oppisete of the other planet
+                        *force[j] = subVec3D(force[j], &forceContribution);
+                    }
+                }
+            }
+        }
+    }
+}
 void updatePlanets3D(struct Planet3D *planets[], struct Vector3D *force[], int N, float dt)
 {
     // Calculating half a time step
     double hdt = dt / 2;
 
-    CalcForces(force, planets, N);
+    CalcForcesFast(force, planets, N);
 
     for (int i = 0; i < N; i++)
     {
@@ -133,7 +207,7 @@ void updatePlanets3D(struct Planet3D *planets[], struct Vector3D *force[], int N
         planets[i]->vel3D = sumVec3D(&planets[i]->vel3D, &dV);
         planets[i]->pos3D = sumVec3D(&planets[i]->pos3D, &dPos);
     }
-    CalcForces(force, planets, N);
+    CalcForcesFast(force, planets, N);
     for (int i = 0; i < N; i++)
     {
         // Calculating force at t = t + dt

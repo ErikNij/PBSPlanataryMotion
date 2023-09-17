@@ -161,6 +161,7 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
         }
         printf("the name of the new planet is %s\n", NewSimPlanets.body[j].name);
         NewSimPlanets.body[j].mass = SimPlanets.body[j].mass;
+        NewSimPlanets.body[j].id = SimPlanets.body[j].id;
         NewSimPlanets.body[j].acc3D.x = 0;
         NewSimPlanets.body[j].acc3D.y = 0;
         NewSimPlanets.body[j].acc3D.z = 0;

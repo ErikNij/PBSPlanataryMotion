@@ -3,6 +3,8 @@
     "stdlib.h": "c",
     "loaddatfile.h": "c",
     "vectors.h": "c",
-    "planet.h": "c"
+    "planet.h": "c",
+    "dataanalysis.h": "c",
+    "stdio.h": "c"
   }
 }
