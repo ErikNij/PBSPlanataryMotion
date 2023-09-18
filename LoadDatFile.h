@@ -3,6 +3,7 @@
 #include "Planet.h"
 #include "Vectors.h"
 #define dimentions 3
+#define nMax 1024
 
 void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
 {
@@ -24,7 +25,6 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
     SimPlanets.body = (struct Planet *)malloc((numbPlanets) * sizeof(struct Planet));
     NewSimPlanets.body = (struct Planet3D *)malloc((numbPlanets) * sizeof(struct Planet3D));
     // Reading the  file
-    const int nMax = 1024;
     char line[nMax];
     FILE *file = NULL;
     char *fileToOpen;
@@ -181,7 +181,7 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
     }
     printf("Reformation complete. \n");
 
-    printf("Creating a list of pointers to complete the loading\n");
+    printf("Populating the list of pointers to complete the loading\n");
     for (int j = 0; j < numbPlanets; j++)
     {
         planets[j] = &NewSimPlanets.body[j];
