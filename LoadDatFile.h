@@ -2,29 +2,31 @@
 #include <stdlib.h> /* standard c library */
 #include "Planet.h"
 #include "Vectors.h"
+
 #define dimentions 3
+#define nMax 1024
 
 void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
-{
-    struct Planets SimPlanets;
-    struct Planets3D NewSimPlanets;
-    struct Planet Sun2021Pos;
+{    
+    struct Planets3D SimPlanets;
+    struct Planet3D Sun2021Pos;
     double momentum[dimentions] = {0, 0, 0};
     double deltaV[dimentions] = {0, 0, 0};
     double NewMomentum[dimentions] = {0, 0, 0};
     double ImprovementPercentage[dimentions] = {0, 0, 0};
     double totalMass = 0;
     double VelToCal = 0;
+
     if (numbPlanets > 230)
     {
         printf("Maximum number of planets to simulate is 230, you entered, %d. Simulation set for 230 planets.", numbPlanets);
         numbPlanets = 230;
     };
+
     // Allocating memory for the planet array
-    SimPlanets.body = (struct Planet *)malloc((numbPlanets) * sizeof(struct Planet));
-    NewSimPlanets.body = (struct Planet3D *)malloc((numbPlanets) * sizeof(struct Planet3D));
+    SimPlanets.body = (struct Planet3D *)malloc((numbPlanets) * sizeof(struct Planet3D));
+
     // Reading the  file
-    const int nMax = 1024;
     char line[nMax];
     FILE *file = NULL;
     char *fileToOpen;
@@ -39,7 +41,7 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
     file = fopen(fileToOpen, "rb");
     if (file == NULL)
     {
-        printf("Your file is wrong you goof");
+        printf("Cannot open specified .dat file");
         exit(1);
     }
     // looping over everyline to grab the stuff
@@ -53,16 +55,14 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
                 j = j - 1;
                 sscanf(line, "%d %s %lf %Lf %Lf %Lf %Lf %Lf",
                        &SimPlanets.body[j].id,
-                       SimPlanets.body[j].strName,
+                       SimPlanets.body[j].name,
                        &SimPlanets.body[j].mass,
-                       &SimPlanets.body[j].xpos,
-                       &SimPlanets.body[j].ypos,
-                       &SimPlanets.body[j].zpos,
-                       &SimPlanets.body[j].xvel,
-                       &SimPlanets.body[j].yvel,
-                       &SimPlanets.body[j].zvel);
-                printf("loaded %s with ID %d. This is planet #%d for us!\n", SimPlanets.body[j].strName, SimPlanets.body[j].id, j + 1);
-                printf("The stored x postion is %Lf\n", SimPlanets.body[j].xpos);
+                       &SimPlanets.body[j].pos3D.x,
+                       &SimPlanets.body[j].pos3D.y,
+                       &SimPlanets.body[j].pos3D.z,
+                       &SimPlanets.body[j].vel3D.x,
+                       &SimPlanets.body[j].vel3D.y,
+                       &SimPlanets.body[j].vel3D.z);                
                 j = j + 1;
             }
         }
@@ -72,14 +72,14 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
     fgets(line, nMax, file);
     sscanf(line, "%d %s %lf %Lf %Lf %Lf %Lf %Lf",
            &Sun2021Pos.id,
-           Sun2021Pos.strName,
+           Sun2021Pos.name,
            &Sun2021Pos.mass,
-           &Sun2021Pos.xpos,
-           &Sun2021Pos.ypos,
-           &Sun2021Pos.zpos,
-           &Sun2021Pos.xvel,
-           &Sun2021Pos.yvel,
-           &Sun2021Pos.zvel);
+           &Sun2021Pos.pos3D.x,
+           &Sun2021Pos.pos3D.y,
+           &Sun2021Pos.pos3D.z,
+           &Sun2021Pos.vel3D.x,
+           &Sun2021Pos.vel3D.y,
+           &Sun2021Pos.vel3D.z);
 
     for (int i = 0; i < numbPlanets; i++)
     {
@@ -89,9 +89,9 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
             SimPlanets.body[i].mass = 1;
         }
         // Setting the sun to the center of the simulation
-        SimPlanets.body[i].xpos = SimPlanets.body[i].xpos - Sun2021Pos.xpos;
-        SimPlanets.body[i].ypos = SimPlanets.body[i].ypos - Sun2021Pos.ypos;
-        SimPlanets.body[i].zpos = SimPlanets.body[i].zpos - Sun2021Pos.zpos;
+        SimPlanets.body[i].pos3D.x = SimPlanets.body[i].pos3D.x - Sun2021Pos.pos3D.x;
+        SimPlanets.body[i].pos3D.y = SimPlanets.body[i].pos3D.y - Sun2021Pos.pos3D.y;
+        SimPlanets.body[i].pos3D.z = SimPlanets.body[i].pos3D.z - Sun2021Pos.pos3D.z;
 
         // Finding the total momentum
         /*
@@ -154,37 +154,11 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
     printf("The velocity should change by %lf, %lf, and %lf for each direction, however floating point makes this impossible.\n", deltaV[0], deltaV[1], deltaV[2]);
     */
     }
-    printf("\nReformating to match the other style.\n");
-    for (int j = 0; j < numbPlanets; j++)
-    {
-        for (int k = 0; k < 32; k++)
-        {
-            NewSimPlanets.body[j].name[k] = SimPlanets.body[j].strName[k];
-        }
-        // printf("the name of the new planet is %s\n", NewSimPlanets.body[j].name);
-        NewSimPlanets.body[j].mass = SimPlanets.body[j].mass;
-        NewSimPlanets.body[j].id = SimPlanets.body[j].id;
-        NewSimPlanets.body[j].acc3D.x = 0;
-        NewSimPlanets.body[j].acc3D.y = 0;
-        NewSimPlanets.body[j].acc3D.z = 0;
-
-        NewSimPlanets.body[j].vel3D.x = SimPlanets.body[j].xvel;
-        NewSimPlanets.body[j].pos3D.x = SimPlanets.body[j].xpos;
-
-        NewSimPlanets.body[j].vel3D.y = SimPlanets.body[j].yvel;
-        NewSimPlanets.body[j].pos3D.y = SimPlanets.body[j].ypos;
-
-        NewSimPlanets.body[j].vel3D.z = SimPlanets.body[j].zvel;
-        NewSimPlanets.body[j].pos3D.z = SimPlanets.body[j].zpos;
-
-        // printf("The new stored x postion is %f\n", NewSimPlanets.body[j].pos3D.x);
-    }
-    printf("Reformation complete. \n");
-
+    
     printf("Creating a list of pointers to complete the loading\n");
     for (int j = 0; j < numbPlanets; j++)
     {
-        planets[j] = &NewSimPlanets.body[j];
+        planets[j] = &SimPlanets.body[j];
         // printf("%s is now stored at %p \n", planets[j]->name, planets[j]);
     }
 
