@@ -180,14 +180,13 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
         // printf("The new stored x postion is %f\n", NewSimPlanets.body[j].pos3D.x);
     }
     printf("Reformation complete. \n");
-    printf("Creating a list of pointers to complete the transition\n");
-    // struct Planet3D *pointerPlanet[230];
+
+    printf("Creating a list of pointers to complete the loading\n");
     for (int j = 0; j < numbPlanets; j++)
     {
         planets[j] = &NewSimPlanets.body[j];
         // printf("%s is now stored at %p \n", planets[j]->name, planets[j]);
     }
-    // planets = pointerPlanet;
 
     free(SimPlanets.body);
 }

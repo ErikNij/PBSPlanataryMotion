@@ -11,8 +11,8 @@ int main()
     printf("Starting simulation...\n");
 
     // Constants
-    double t_sim = 365 * 24 * 60 * 60; // s
-    double dt = 180;                   // s
+    double t_sim = 1 * 360 * 24 * 60 * 60; // s
+    double dt = 1;                         // s
     int numberOfPLotPoints = 365 / 5;
     int itrWOsaving = floor(t_sim / dt / numberOfPLotPoints);
     int N_PLANETS = 230;
@@ -20,7 +20,8 @@ int main()
     // char fileNames[36*230];
     char currentFileName[36];
     char *folderName = "createdData";
-    // Declare an arrays of pointers
+
+    // Declaring an arrays of pointers
     struct Vector3D *force[N_PLANETS];
     struct Planet3D *planets[N_PLANETS];
     struct Planet3D *planetsEnd[N_PLANETS];
