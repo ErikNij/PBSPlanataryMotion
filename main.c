@@ -34,8 +34,7 @@ int main()
     // Load data
     getData(planets, N_PLANETS, 1);
     getData(planetsEnd, N_PLANETS, 0);
-
-    printf("Total simulation time: %0.2lf seconds, time step: %0.2lf\n", t_sim, dt);
+    printf("Loaded planet data\n");
 
     // Open files to write planet data to   
     printf("Opening files\n");
@@ -50,17 +49,17 @@ int main()
         filePointers[i] = fopen(currentFileName, "w");
     }
 
+    printf("Total simulation time: %0.2lf seconds, time step: %0.2lf\n", t_sim, dt);
     printf("Starting simulation...\n");
-    // Run sumulations
-    printf("Loading bar:\n");
-
+    
+    // Run sumulations    
     for (int j = 0; j < numberOfPLotPoints; j++)
     {
         printf("_");
     }
     printf("\n");
+    
     int i = 0;
-
     for (double t = 0; t < t_sim; t = t + dt)
     {
         updatePlanets3D(planets, force, N_PLANETS, dt);
@@ -105,6 +104,11 @@ int main()
     printf("All files closed\n");
 
     printf("Simulation finished!\n");
+
+    // Free memory
+    free(*force);
+    free(*planets);
+    free(*planetsEnd);
 
     return 0;
 }
