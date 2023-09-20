@@ -22,7 +22,6 @@ void CalcForces(struct Vector3D *force[], struct Planet3D *planets[], int N)
     {
         // Setting the force at the start to 0
         *force[i] = subVec3D(force[i], force[i]);
-        //*force[i] = {0,0,0};
 
         for (int j = 0; j < N; j++)
         {
@@ -39,6 +38,7 @@ void CalcForcesFast(struct Vector3D *force[], struct Planet3D *planets[], int N)
 {
     int system[230];
     struct Vector3D forceContribution;
+
     // Setting the system of the planets
     for (int i = 0; i < N; i++)
     {
@@ -51,6 +51,7 @@ void CalcForcesFast(struct Vector3D *force[], struct Planet3D *planets[], int N)
             system[i] = planets[i]->id / 10000;
         }
     }
+    
     // Doing the force calcuations
     // Looping over every planet
     for (int i = 0; i < N; i++)

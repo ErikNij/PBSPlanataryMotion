@@ -23,7 +23,6 @@ struct Planets3D
 
 struct Vector3D CalcGravityForce3D(struct Planet3D *part1, struct Planet3D *part2);
 
-
 void CalcForces(struct Vector3D *force[], struct Planet3D *planets[], int N);
 
 void CalcForcesFast(struct Vector3D *force[], struct Planet3D *planets[], int N);
