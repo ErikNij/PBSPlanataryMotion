@@ -11,11 +11,15 @@ int main()
     printf("Initializing simulation...\n");
 
     // Constants
-    double t_sim = 1 * 365 * 24 * 60 * 60; // s (1 year)
-    double dt = 1440  ;                         // s
-    int numberOfPLotPoints = 365 / 5;
+    double t_sim =  1 * 24 * 60 * 60; // s
+    double dt = 1200;               // s
+    int numberOfPLotPoints = 24*3;
     int itrWOsaving = floor(t_sim / dt / numberOfPLotPoints);
     int N_PLANETS = 230;
+    //int N_PLANETS;
+    //printf("How many planets do you want?\n");
+    //scanf("%d",&N_PLANETS);
+    // int numbPlanets = N_PLANETS;
     char currentFileName[36];
     char *folderName = "createdData";
 
@@ -26,12 +30,12 @@ int main()
 
     for (int i = 0; i < N_PLANETS; i++)
     {
-        force[i] = (struct Vector3D *)malloc(sizeof(struct Vector3D));
-        planets[i] = (struct Planet3D *)malloc(sizeof(struct Planet3D));
-        planetsEnd[i] = (struct Planet3D *)malloc(sizeof(struct Planet3D));
+        force[i] = (struct Vector3D *)malloc(sizeof(struct Vector3D*));
+        planets[i] = (struct Planet3D *)malloc(sizeof(struct Planet3D*));
+        planetsEnd[i] = (struct Planet3D *)malloc(sizeof(struct Planet3D*));
     }
 
-    // Load data
+    // Load planet data from provided .dat files
     getData(planets, N_PLANETS, 1);
     getData(planetsEnd, N_PLANETS, 0);
     printf("Loaded planet data\n");
@@ -58,7 +62,8 @@ int main()
         printf("_");
     }
     printf("\n");
-    
+
+    // Run sumulations
     int i = 0;
     for (double t = 0; t < t_sim; t = t + dt)
     {
