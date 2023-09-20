@@ -28,7 +28,6 @@ void KEandPE(struct Planet3D *planets[], int numbPlanets, double t, FILE *filePo
             double distanceMagnitude = sqrt(inProdVec3D(&distanceVec, &distanceVec));
             CurrentPE = GRAV_CONST * planets[i]->mass * planets[j]->mass / distanceMagnitude;
             PE[i] = PE[i] + CurrentPE;
-            PE[j] = PE[j] + CurrentPE;
         }
     }
     for (int i = 0; i < numbPlanets; i++)
@@ -42,7 +41,7 @@ void KEandPE(struct Planet3D *planets[], int numbPlanets, double t, FILE *filePo
     double distanceMagnitude = sqrt(inProdVec3D(&distanceVec, &distanceVec));
     CurrentPE = GRAV_CONST * planets[0]->mass * planets[1]->mass / distanceMagnitude;
 
-    SumPEWithoutM = SumPE - (2 * CurrentPE);
+    SumPEWithoutM = SumPE - (1 * CurrentPE);
     SumKEWithoutM = SumKE - (0.5 * planets[1]->mass * (pow(planets[1]->vel3D.x, 2) + pow(planets[1]->vel3D.y, 2) + pow(planets[1]->vel3D.z, 2)));
     SumEWithoutM = SumKEWithoutM + SumPEWithoutM;
 

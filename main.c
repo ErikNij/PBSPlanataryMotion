@@ -10,16 +10,22 @@ int main()
 {
     printf("Initializing simulation...\n");
 
-    // Constants
-    double t_sim =  1 * 24 * 60 * 60; // s
-    double dt = 1200;               // s
-    int numberOfPLotPoints = 24*3;
+    // Constants and settings
+    double t_sim =  365 * 24 * 60 * 60; // s
+    double dt = 1440;               // s
+    int numberOfPLotPoints = 365/5;
+    
+    //365 days and dt = 3600 are  good settings, that give solid results quickly
     int itrWOsaving = floor(t_sim / dt / numberOfPLotPoints);
-    int N_PLANETS = 230;
-    //int N_PLANETS;
-    //printf("How many planets do you want?\n");
-    //scanf("%d",&N_PLANETS);
-    // int numbPlanets = N_PLANETS;
+    //int N_PLANETS = 230;
+
+    //The number of planets can also be determined by the user:
+
+    int N_PLANETS;
+    printf("How many planets do you want? 230 is the max.\n");
+    scanf("%d",&N_PLANETS);
+
+
     char currentFileName[36];
     char *folderName = "createdData";
 
@@ -111,9 +117,10 @@ int main()
     printf("Simulation finished!\n");
 
     // Free memory
-    free(*force);
     free(*planets);
     free(*planetsEnd);
+    //free(*force);
+    
 
     return 0;
 }
