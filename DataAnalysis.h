@@ -9,7 +9,7 @@ void KEandPE(struct Planet3D *planets[], int numbPlanets, double t, FILE *filePo
     double KE[230];
     double PE[230];
     double CurrentPE;
-    double gravConst = 6.6743015 * pow(10, -11);
+    double gravConst = -6.6743015 * pow(10, -11) / 2;
     double SumPE = 0;
     double SumKE = 0;
     double SumE = 0;
@@ -24,7 +24,7 @@ void KEandPE(struct Planet3D *planets[], int numbPlanets, double t, FILE *filePo
     for (int i = 0; i < numbPlanets; i++)
     {
         KE[i] = 0.5 * planets[i]->mass * (pow(planets[i]->vel3D.x, 2) + pow(planets[i]->vel3D.y, 2) + pow(planets[i]->vel3D.z, 2));
-        for (int j = i + 1; j < numbPlanets; j++)
+        for (int j = i+1; j < numbPlanets; j++)
         {
             struct Vector3D distanceVec = subVec3D(&planets[i]->pos3D, &planets[j]->pos3D);
             double distanceMagnitude = sqrt(inProdVec3D(&distanceVec, &distanceVec));
@@ -60,8 +60,8 @@ void FinalPostion(struct Planet3D *planets[], struct Planet3D *planetsEnd[], int
     for (int i = 0; i < numbPlanets; i++)
     {
         dr = subVec3D(&planets[i]->pos3D, &planetsEnd[i]->pos3D);
-        percentOff = fabs(dr.x / planetsEnd[i]->pos3D.x) + fabs(dr.y / planetsEnd[i]->pos3D.y);
+        percentOff = (fabs(dr.x / planetsEnd[i]->pos3D.x) + fabs(dr.y / planetsEnd[i]->pos3D.y) + fabs(dr.z / planetsEnd[i]->pos3D.z))/3.0 ;
         fprintf(filePointer, "%s, %lf, %lf\n",
-                planets[i]->name, dr.x + dr.y, percentOff);
+                planets[i]->name, dr.x + dr.y +dr.z, percentOff);
     }
 }

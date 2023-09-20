@@ -219,7 +219,6 @@ void updatePlanets3D(struct Planet3D *planets[], struct Vector3D *force[], int N
         planets[i]->acc3D = accelerationPrime;
         planets[i]->vel3D = sumVec3D(&planets[i]->vel3D, &dVPrime);
     }
-    // free(force);
 }
 
 #endif
