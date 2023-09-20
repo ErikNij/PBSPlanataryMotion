@@ -12,7 +12,7 @@ int main()
 
     // Constants
     double t_sim = 1 * 365 * 24 * 60 * 60; // s (1 year)
-    double dt = 1440  ;                         // s
+    double dt = 1440; // s
     int numberOfPLotPoints = 365 / 5;
     int itrWOsaving = floor(t_sim / dt / numberOfPLotPoints);
     int N_PLANETS = 230;
