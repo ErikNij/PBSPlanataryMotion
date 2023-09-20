@@ -95,10 +95,8 @@ void getData(struct Planet3D *planets[], int numbPlanets, int StartEnd)
 
     }
     
-    printf("Creating a list of pointers to complete the loading\n");
     for (int j = 0; j < numbPlanets; j++)
     {
         planets[j] = &SimPlanets.body[j];
-        // printf("%s is now stored at %p \n", planets[j]->name, planets[j]);
     }
 }

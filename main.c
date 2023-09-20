@@ -8,7 +8,7 @@
 
 int main()
 {
-    printf("Starting simulation...\n");
+    printf("Initializing simulation...\n");
 
     // Constants
     double t_sim = 1 * 365 * 24 * 60 * 60; // s (1 year)
@@ -37,6 +37,8 @@ int main()
 
     printf("Total simulation time: %0.2lf seconds, time step: %0.2lf\n", t_sim, dt);
 
+    // Open files to write planet data to   
+    printf("Opening files\n");
     void *filePointers[230];
     FILE *filePointerEnergy;
     filePointerEnergy = fopen("EnergyOverTime.txt", "w");
@@ -48,12 +50,13 @@ int main()
         filePointers[i] = fopen(currentFileName, "w");
     }
 
+    printf("Starting simulation...\n");
     // Run sumulations
-    printf("Beun loading bar:\n");
+    printf("Loading bar:\n");
 
     for (int j = 0; j < numberOfPLotPoints; j++)
     {
-        printf("|");
+        printf("_");
     }
     printf("\n");
     int i = 0;
