@@ -21,25 +21,27 @@ int main()
 
     //The number of planets can also be determined by the user:
 
-    int N_PLANETS;
-    printf("How many planets do you want? 230 is the max.\n");
-    scanf("%d",&N_PLANETS);
+int N_PLANETS;
+printf("How many planets do you want? 230 is the max.\n");
+scanf("%d", &N_PLANETS);
+
+char currentFileName[36];
+char *folderName = "createdData";
+
+// Declare pointers to arrays of structures
+struct Vector3D **force = (struct Vector3D **)malloc(N_PLANETS * sizeof(struct Vector3D *));
+struct Planet3D **planets = (struct Planet3D **)malloc(N_PLANETS * sizeof(struct Planet3D *));
+struct Planet3D **planetsEnd = (struct Planet3D **)malloc(N_PLANETS * sizeof(struct Planet3D *));
+
+// Allocate memory for each individual element
+for (int i = 0; i < N_PLANETS; i++)
+{
+    force[i] = (struct Vector3D *)malloc(sizeof(struct Vector3D*));
+    planets[i] = (struct Planet3D *)malloc(sizeof(struct Planet3D*));
+    planetsEnd[i] = (struct Planet3D *)malloc(sizeof(struct Planet3D*));
+}
 
 
-    char currentFileName[36];
-    char *folderName = "createdData";
-
-    // Declaring an arrays of pointers
-    struct Vector3D *force[N_PLANETS];
-    struct Planet3D *planets[N_PLANETS];
-    struct Planet3D *planetsEnd[N_PLANETS];
-
-    for (int i = 0; i < N_PLANETS; i++)
-    {
-        force[i] = (struct Vector3D *)malloc(sizeof(struct Vector3D*));
-        planets[i] = (struct Planet3D *)malloc(sizeof(struct Planet3D*));
-        planetsEnd[i] = (struct Planet3D *)malloc(sizeof(struct Planet3D*));
-    }
 
     // Load planet data from provided .dat files
     getData(planets, N_PLANETS, 1);
